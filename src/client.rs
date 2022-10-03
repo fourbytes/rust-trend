@@ -293,9 +293,9 @@ impl Client {
             .query(&[
                 ("hl", self.lang.to_string().as_str()),
                 ("geo", self.country.to_string().as_str()),
-                ("tz", "-120"),
+                ("tz", "-660"),
                 ("req", &comparison_item),
-                ("tz", "-120"),
+                ("tz", "-660"),
             ])
             .send();
 
@@ -304,12 +304,12 @@ impl Client {
             Err(error) => panic!("Can't get client response: {:?}", error),
         };
 
-        println!("{:?}", resp);
+        // println!("{:?}", resp);
 
         let body = resp.text().unwrap();
         let clean_response = utils::sanitize_response(&body, Self::BAD_CHARACTER).to_string();
 
-        println!("{:?}", clean_response);
+        // println!("{:?}", clean_response);
 
         self.response = serde_json::from_str(clean_response.as_str()).unwrap();
         self
@@ -331,7 +331,7 @@ impl Client {
         let id = self.category.get_int("Id").unwrap_or(0);
 
         format!(
-            "{{'comparisonItem':[{}],'category':{},'property':'{}'}}",
+            "{{'comparisonItem':[{}],'category':{},'property':'{}','resolution': 'DAY'}}",
             comparison_item.as_str(),
             id,
             self.property
